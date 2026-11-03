@@ -1,0 +1,11 @@
+{
+  "name": "sistema-academico-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend do Sistema Acadêmico - DS II",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  }
+}
