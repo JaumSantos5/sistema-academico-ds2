@@ -7,6 +7,7 @@
   <title>Sistema Acadêmico DS II</title>
   <link rel="stylesheet" href="css/estilos.css">
   <script src="js/model/aluno-model.js" defer></script>
+  <script src="js/service/aluno-service.js" defer></script>
   <script src="js/view/aluno-view.js" defer></script>
   <script src="js/controller/aluno-controller.js" defer></script>
 </head>
@@ -31,6 +32,71 @@
           <div class="campo"><label for="turma">Turma</label><input id="turma" name="turma" required></div>
         </div>
         <button type="submit" id="botao-cadastrar">Cadastrar aluno</button>
+        <button type="button" id="botao-limpar">Limpar dados locais</button>
+      </form>
+      <p id="mensagem" class="mensagem" role="status" aria-live="polite"></p>
+    </section>
+    <section class="cartao">
+      <h2>Alunos cadastrados</h2>
+      <div class="tabela-area">
+        <table>
+          <thead>
+            <tr>
+              <th>RA</th>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Curso</th>
+              <th>Turma</th>
+            </tr>
+          </thead>
+          <tbody id="corpo-tabela"></tbody>
+        </table>
+      </div>
+      <p id="total-alunos">Total: 0</p>
+    </section>
+    <section class="cartao">
+      <h2>Dados em JSON</h2>
+      <pre id="saida-json">[]</pre>
+    </section>
+  </main>
+</body>
+
+</html>
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Acadêmico DS II</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <script src="js/model/aluno-model.js" defer></script>
+  <script src="js/service/aluno-service.js" defer></script>
+  <script src="js/view/aluno-view.js" defer></script>
+  <script src="js/controller/aluno-controller.js" defer></script>
+</head>
+
+<body>
+  <header class="cabecalho">
+    <div class="container">
+      <h1>Sistema Acadêmico DS II</h1>
+      <p>Cadastro de alunos com MVC</p>
+    </div>
+  </header>
+  <main class="container">
+    <section class="cartao">
+      <h2>Cadastrar aluno</h2>
+      <form id="form-aluno">
+        <div class="grade-formulario">
+          <div class="campo"><label for="ra">RA</label><input id="ra" name="ra" required></div>
+          <div class="campo"><label for="nome">Nome</label><input id="nome" name="nome" required></div>
+          <div class="campo"><label for="email">E-mail</label><input id="email" name="email" type="email" required>
+          </div>
+          <div class="campo"><label for="curso">Curso</label><input id="curso" name="curso" required></div>
+          <div class="campo"><label for="turma">Turma</label><input id="turma" name="turma" required></div>
+        </div>
+        <button type="submit" id="botao-cadastrar">Cadastrar aluno</button>
+        <button type="button" id="botao-limpar">Limpar dados locais</button>
       </form>
       <p id="mensagem" class="mensagem" role="status" aria-live="polite"></p>
     </section>

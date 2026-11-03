@@ -141,3 +141,12 @@ pre {
   background: #f1f5f9;
   border-radius: 6px;
 }
+
+#botao-limpar {
+  background: #64748b;
+  margin-left: 6px;
+}
+
+#botao-limpar:hover {
+  background: #475569;
+}
