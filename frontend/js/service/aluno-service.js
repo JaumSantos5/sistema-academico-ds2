@@ -1,14 +1,22 @@
 const AlunoService = {
-  chave: "sistema-academico-alunos",
-  listar() {
+  endereco: "http://localhost:3000/api/alunos",
+  async requisitar(url, opcoes) {
+    let resposta;
     try {
-      const json = localStorage.getItem(this.chave);
-      const alunos = json ? JSON.parse(json) : [];
-      return Array.isArray(alunos) ? alunos : [];
+      resposta = await fetch(url, opcoes);
     } catch (_) {
-      return [];
+      throw new Error("Não foi possível conectar ao backend. Verifique se npm run dev está ativo.");
     }
+    const retorno = await resposta.json();
+    if (!resposta.ok) throw new Error(retorno.mensagem || `Erro HTTP ${resposta.status}`);
+    return retorno;
   },
-  salvar(alunos) { localStorage.setItem(this.chave, JSON.stringify(alunos)); },
-  limpar() { localStorage.removeItem(this.chave); }
+  async listar() { return this.requisitar(this.endereco); },
+  async cadastrar(dados) {
+    return this.requisitar(this.endereco, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados)
+    });
+  }
 };

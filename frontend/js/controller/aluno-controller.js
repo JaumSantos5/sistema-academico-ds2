@@ -1,23 +1,32 @@
 const AlunoController = {
-  atualizarTela() { AlunoView.exibirAlunos(AlunoModel.listar()); },
-  iniciar() {
-    AlunoModel.alunos = AlunoService.listar();
-    this.atualizarTela();
-    document.querySelector("#form-aluno").addEventListener("submit", evento => {
+  definirCarregando(carregando) {
+    document.querySelector("#botao-cadastrar").disabled = carregando;
+  },
+  async atualizarTela() {
+    const resultado = await AlunoService.listar();
+    AlunoView.exibirAlunos(resultado.dados);
+  },
+  async iniciar() {
+    try {
+      await this.atualizarTela();
+    } catch (erro) {
+      AlunoView.exibirMensagem(erro.message, "erro");
+    }
+    document.querySelector("#form-aluno").addEventListener("submit", async evento => {
       evento.preventDefault();
-      const resultado = AlunoModel.cadastrar(AlunoView.lerDadosFormulario());
-      if (!resultado.sucesso) return AlunoView.exibirMensagem(resultado.mensagem, "erro");
-      AlunoService.salvar(AlunoModel.listar());
-      AlunoView.limparFormulario();
-      AlunoView.exibirMensagem("Aluno cadastrado com sucesso!");
-      this.atualizarTela();
-    });
-    document.querySelector("#botao-limpar").addEventListener("click", () => {
-      if (!confirm("Deseja limpar os alunos cadastrados neste navegador?")) return;
-      AlunoService.limpar();
-      AlunoModel.alunos = [];
-      AlunoView.exibirMensagem("Dados locais apagados.", "informacao");
-      this.atualizarTela();
+      const validacao = AlunoModel.prepararCadastro(AlunoView.lerDadosFormulario());
+      if (!validacao.sucesso) return AlunoView.exibirMensagem(validacao.mensagem, "erro");
+      this.definirCarregando(true);
+      try {
+        await AlunoService.cadastrar(validacao.dados);
+        AlunoView.limparFormulario();
+        AlunoView.exibirMensagem("Aluno cadastrado com sucesso!");
+        await this.atualizarTela();
+      } catch (erro) {
+        AlunoView.exibirMensagem(erro.message, "erro");
+      } finally {
+        this.definirCarregando(false);
+      }
     });
   }
 };
