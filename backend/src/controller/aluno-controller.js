@@ -1,21 +1,14 @@
 const AlunoModel = require("../model/aluno-model");
-const { enviarJson, lerJson } = require("../utils/http");
-
 const AlunoController = {
   listar(req, res) {
-    enviarJson(res, 200, AlunoModel.listar());
+    return res.status(200).json(AlunoModel.listar());
   },
-  async cadastrar(req, res) {
-    try {
-      const dados = await lerJson(req);
-      const resultado = AlunoModel.cadastrar(dados);
-      if (!resultado.sucesso) {
-        return enviarJson(res, resultado.status, { mensagem: resultado.mensagem });
-      }
-      enviarJson(res, 201, { mensagem: "Aluno cadastrado com sucesso.", aluno: resultado.aluno });
-    } catch (erro) {
-      enviarJson(res, erro.status || 500, { mensagem: erro.status ? erro.message : "Erro interno." });
+  cadastrar(req, res) {
+    const resultado = AlunoModel.cadastrar(req.body || {});
+    if (!resultado.sucesso) {
+      return res.status(resultado.status).json({ mensagem: resultado.mensagem });
     }
+    return res.status(201).json({ mensagem: "Aluno cadastrado com sucesso.", aluno: resultado.aluno });
   }
 };
 module.exports = AlunoController;
